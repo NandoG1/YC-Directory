@@ -1,22 +1,15 @@
 import { SearchParams } from "next/dist/server/request/search-params";
 import SearchForm from "../../components/SearchForm";
-import StarupCard from "@/components/StarupCard";
+import StarupCard, { StartupTypeCard } from "@/components/StarupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 
 export default async function Home({searchParams} : {searchParams: {query?: string}}) {
   const query = searchParams.query;
 
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: {_id: 1, name: "Fernando"},
-      _id: 1,
-      description: "This is a description",
-      image: "https://images.unsplash.com/photo-1458571037713-913d8b481dc6?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixid=eyJhcHBfaWQiOjF9&ixlib=rb-1.2.1&q=80&w=1920",
-      category: "Robots",
-      title: "We Robots", 
-    }
-  ]
+  const posts = await client.fetch(STARTUPS_QUERY)
+
+
 
   return (
     <>
@@ -31,7 +24,7 @@ export default async function Home({searchParams} : {searchParams: {query?: stri
         </p>
         <ul className="mt-7 grid md:grid-cols-3 sm:grid-cols-2 gap-5"> 
           {posts?.length > 0 ? (
-            posts.map((post: StartupCardType, index: number) => (<StarupCard key={post._id} post={post}/>))
+            posts.map((post: StartupTypeCard, index: number) => (<StarupCard key={post._id} post={post}/>))
           ): (
             <p className="text-black-100 text-sm font-normal">No starups founds</p>
           )}

@@ -4,8 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from './ui/button'
+import { Author, Startup } from '@/sanity/types'
 
-const StarupCard = ({post}: {post: StarupTypeCard}) => {
+export type StartupTypeCard = Omit<Startup, "author"> & {author?:Author}
+
+const StarupCard = ({post}: {post: StartupTypeCard}) => {
     const {} = post
   return (
     <li className='bg-white border-[5px] border-black py-6 px-5 rounded-[22px] shadow-200 hover:border-primary transition-all duration-500 hover:shadow-300 hover:bg-primary-100 group'>
@@ -41,10 +44,10 @@ const StarupCard = ({post}: {post: StarupTypeCard}) => {
         </Link>
 
         <div className='flex justify-between items-center gap-3 mt-5'>
-            <Link href={`/?query=${post.category.toLowerCase()}`}>
+            <Link href={`/?query=${post.category?.toLowerCase()}`}>
                 <p className='font-medium text-[16px] text-black'>{post.category}</p>
             </Link>
-            <Button className='rounded-full bg-black-200 font-medium text-[16px] text-white px-5 py-3 !important'>
+            <Button className='rounded-full bg-black font-medium text-[16px] text-white px-5 py-3'>
                 <Link href={`/startup/${post._id}`}>
                     Details
                 </Link>
